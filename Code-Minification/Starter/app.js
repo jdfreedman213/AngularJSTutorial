@@ -1,6 +1,9 @@
 /*global angular */
 var myApp = angular.module('myApp', []);
 
-myApp.controller('mainController', function ($scope, $log) {
+myApp.controller('mainController', ['$scope', '$log', function ($scope, $log) {
     "use strict";
-});
+
+    $log.info($scope);
+}]);
+
