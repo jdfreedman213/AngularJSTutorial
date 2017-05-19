@@ -43,7 +43,7 @@
                     <input type="text" ng-model="handle" />
                 </div>
 
-                <div class="alert" ng-show="handle.length !== characters">
+                <div class="alert" ng-hide="handle.length === characters">
                     Must be 5 characters!
                 </div>
 
