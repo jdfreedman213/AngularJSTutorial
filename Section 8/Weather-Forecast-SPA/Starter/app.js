@@ -15,11 +15,16 @@ weatherApp.config(function ($routeProvider) {
         templateUrl: 'pages/forecast.html',
         controller: 'forecastController'
     })
+    .when('/forecast/:days', {
+        templateUrl: 'pages/forecast.html',
+        controller: 'forecastController'
+    });
+
 });
 
 weatherApp.service('forecastService', function() {
 //    var self = this;
-    this.city = '';  
+    this.city = 'Yardley, PA';  
 });
  
 
@@ -31,6 +36,19 @@ weatherApp.controller('homeController', ['$scope', '$log', 'forecastService', fu
 
 }]);
 
-weatherApp.controller('forecastController', ['$scope', '$log', 'forecastService', function($scope, $log, forecastService) { 
+weatherApp.controller('forecastController', ['$scope', '$log', '$resource', '$routeParams', 'forecastService', function($scope, $log, $resource, $routeParams, forecastService) { 
     $scope.city = forecastService.city;
+    $scope.days = $routeParams.days || 2;
+    console.log($scope.days);
+    $scope.weatherAPI = $resource(apiUrl, { callback: "JSON_CALLBACK" }, { get: { method: "JSONP" }})
+    
+    $scope.weatherResult = $scope.weatherAPI.get({ q: $scope.city, cnt: $scope.days });
+    
+    $scope.convertToFahrenheit = function(degK) {
+        return Math.round((1.8 * (degK - 273)) + 32);
+    }
+    
+    $scope.convertToDate = function(dt) {
+        return new Date(dt * 1000);
+    }
 }]);
